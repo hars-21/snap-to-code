@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import "./CodeGenerator.css";
 import { Navbar } from "./Navbar";
+import TechSelection, { Languages } from "./techStack";
 import { processImageFile } from "../utils/imageConverter";
 import { CloudUpload, CloudCheck, CodeXml, Image, Copy } from "lucide-react";
 
@@ -8,6 +9,7 @@ export function CodeGenerator() {
 	const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 	const [generatedCode, setGeneratedCode] = useState<string | null>(null);
 	const [isGenerating, setIsGenerating] = useState(false);
+	const [selectedTech, setSelectedTech] = useState("react");
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const copyRef = useRef<HTMLButtonElement>(null);
@@ -31,12 +33,16 @@ export function CodeGenerator() {
 		}
 
 		setIsGenerating(true);
+		const techLabel = Languages.find((t) => t.id === selectedTech)?.label || "React";
 		const res = await fetch(`/api/v1/generate`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ base64Buffer: uploadedImage }),
+			body: JSON.stringify({
+				base64Buffer: uploadedImage,
+				language: `${techLabel} + Tailwind CSS`,
+			}),
 		});
 
 		const data = await res.json();
@@ -117,6 +123,8 @@ export function CodeGenerator() {
 							</button>
 						)}
 					</div>
+
+					<TechSelection selectedTech={selectedTech} onTechChange={setSelectedTech} />
 
 					{(uploadedImage || generatedCode) && (
 						<div className="main-content">

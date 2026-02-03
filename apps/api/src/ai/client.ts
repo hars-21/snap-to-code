@@ -1,7 +1,11 @@
 import { GoogleGenAI } from "@google/genai";
-import { generateCodePrompt } from "./prompts/imageToCode";
+import { systemInstruction } from "./prompts/imageToCode";
 
-export const generateCode = async (mimeType: string, base64ImageFile: Base64URLString) => {
+export const generateCode = async (
+	mimeType: string,
+	base64ImageFile: Base64URLString,
+	technology: string,
+) => {
 	const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 	const contents = [
@@ -13,7 +17,9 @@ export const generateCode = async (mimeType: string, base64ImageFile: Base64URLS
 						data: base64ImageFile,
 					},
 				},
-				{ text: generateCodePrompt },
+				{
+					text: `Generate pixel-perfect UI code from the provided image using the specified technology. Technology: ${technology}`,
+				},
 			],
 		},
 	];
@@ -21,6 +27,9 @@ export const generateCode = async (mimeType: string, base64ImageFile: Base64URLS
 	const response = await ai.models.generateContent({
 		model: "gemini-2.5-flash",
 		contents: contents,
+		config: {
+			systemInstruction: systemInstruction,
+		},
 	});
 
 	return response.text;

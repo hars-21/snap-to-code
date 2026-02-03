@@ -10,7 +10,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(requestLogger);
 
 app.get("/api/health", (req: Request, res: Response) => {
@@ -22,7 +23,7 @@ app.get("/api/v1/health", (req: Request, res: Response) => {
 });
 
 app.post("/api/v1/generate", async (req: Request, res: Response, next: NextFunction) => {
-	const { base64Buffer } = req.body;
+	const { base64Buffer, language } = req.body;
 
 	if (!base64Buffer) {
 		res.status(400).json({
@@ -37,7 +38,7 @@ app.post("/api/v1/generate", async (req: Request, res: Response, next: NextFunct
 	const base64ImageFile = arr[1];
 
 	try {
-		const result = await generateCode(mime, base64ImageFile);
+		const result = await generateCode(mime, base64ImageFile, language);
 		res.status(200).json({
 			success: true,
 			message: "Code Generation Successful",
