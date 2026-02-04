@@ -3,7 +3,7 @@ import { systemInstruction } from "./prompts/imageToCode";
 
 export const generateCode = async (
 	mimeType: string,
-	base64ImageFile: Base64URLString,
+	base64ImageFile: string,
 	technology: string,
 ) => {
 	const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });

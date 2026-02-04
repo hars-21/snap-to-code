@@ -1,0 +1,21 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		"target": "ES2022",
+		"lib": ["ES2022"],
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"moduleDetection": "force",
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"verbatimModuleSyntax": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"forceConsistentCasingInFileNames": true
+	}
+}

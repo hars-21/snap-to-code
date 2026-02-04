@@ -1,4 +1,4 @@
-import { config } from "@repo/eslint-config/vite";
+import { config } from "@repo/eslint-config/node";
 
 /** @type {import("eslint").Linter.Config[]} */
 export default config;

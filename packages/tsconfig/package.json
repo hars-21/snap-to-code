@@ -1,0 +1,13 @@
+{
+	"name": "@repo/tsconfig",
+	"version": "0.0.0",
+	"private": true,
+	"license": "MIT",
+	"exports": {
+		"./base": "./base.json",
+		"./node": "./node.json",
+		"./vite": "./vite.json",
+		"./extension": "./extension.json",
+		"./react-library": "./react-library.json"
+	}
+}

@@ -1,4 +1,5 @@
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
+import type { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { requestLogger } from "./utils/logger";
@@ -14,15 +15,15 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(requestLogger);
 
-app.get("/api/health", (req: Request, res: Response) => {
+app.get("/api/health", (_req: Request, res: Response) => {
 	res.status(200).json({ status: "API is healthy" });
 });
 
-app.get("/api/v1/health", (req: Request, res: Response) => {
+app.get("/api/v1/health", (_req: Request, res: Response) => {
 	res.status(200).json({ status: "API is healthy" });
 });
 
-app.post("/api/v1/generate", async (req: Request, res: Response, next: NextFunction) => {
+app.post("/api/v1/generate", async (req: Request, res: Response) => {
 	const { base64Buffer, language } = req.body;
 
 	if (!base64Buffer) {
@@ -49,7 +50,7 @@ app.post("/api/v1/generate", async (req: Request, res: Response, next: NextFunct
 	}
 });
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, _req: Request, res: Response) => {
 	console.error(err.stack);
 	res.status(500).json({ error: "Something went wrong!" });
 });
