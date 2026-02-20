@@ -1,4 +1,5 @@
-import express, { type Request, type Response } from "express";
+import express from "express";
+import type { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { requestLogger } from "./utils/logger";
