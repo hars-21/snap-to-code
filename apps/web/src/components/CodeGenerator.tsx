@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-import "./CodeGenerator.css";
 import { Navbar } from "./Navbar";
 import TechSelection, { Languages } from "./techStack";
 import { processImageFile } from "../utils/imageConverter";
@@ -36,9 +35,7 @@ export function CodeGenerator() {
 		const techLabel = Languages.find((t) => t.id === selectedTech)?.label || "React";
 		const res = await fetch(`/api/v1/generate`, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				base64Buffer: uploadedImage,
 				language: `${techLabel} + Tailwind CSS`,
@@ -55,46 +52,62 @@ export function CodeGenerator() {
 			navigator.clipboard.writeText(generatedCode);
 			if (copyRef.current) {
 				const originalText = copyRef.current.innerHTML;
-				copyRef.current.innerText = "Copied !";
+				copyRef.current.innerText = "Copied!";
 				setTimeout(() => {
-					if (copyRef.current) {
-						copyRef.current.innerHTML = originalText;
-					}
+					if (copyRef.current) copyRef.current.innerHTML = originalText;
 				}, 2500);
 			}
 		}
 	};
 
 	return (
-		<div className="app-container">
+		<div
+			className="min-h-screen flex flex-col"
+			style={{ background: "linear-gradient(135deg, #0f0f1e 0%, #1a0f2e 50%, #0f0f1e 100%)" }}
+		>
 			<Navbar />
 
-			<div className="hero-section">
-				<div className="hero-content">
-					<div className="hero-badge">
-						<span className="badge-dot"></span>
+			{/* Hero */}
+			<div
+				className="flex items-center justify-center px-5 py-[140px_20px_80px] min-h-[85vh]"
+				style={{
+					padding: "140px 20px 80px",
+					background:
+						"radial-gradient(circle at 50% 50%, rgba(168,85,247,0.15) 0%, transparent 60%)",
+				}}
+			>
+				<div className="max-w-3xl text-center flex flex-col items-center">
+					{/* Badge */}
+					<div className="inline-flex items-center gap-2 px-5 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full text-sm text-[#a0a0b0] mb-8">
+						<span className="badge-dot" />
 						<span>AI-Powered Code Generation</span>
 					</div>
 
-					<h1 className="hero-title">
+					{/* Title */}
+					<h1 className="title-gradient text-[3.5rem] max-md:text-[2.2rem] max-sm:text-[1.8rem] font-bold leading-tight mb-6">
 						Transform Designs into <span className="gradient-text">Production Code</span>
 					</h1>
 
-					<p className="hero-subtitle">
+					{/* Subtitle */}
+					<p className="text-[1.15rem] text-[#a0a0b0] leading-relaxed mb-12 max-w-xl">
 						Upload any design screenshot and get pixel-perfect, clean code instantly. Powered by
 						advanced AI technology.
 					</p>
 
-					<div className="upload-section">
+					{/* Upload + Generate */}
+					<div className="flex flex-wrap gap-4 items-center justify-center mb-20 w-full max-w-xl max-md:flex-col">
 						<input
 							ref={fileInputRef}
 							type="file"
 							accept="image/*"
 							onChange={handleFileUpload}
-							className="file-input"
+							className="hidden"
 							id="file-upload"
 						/>
-						<label htmlFor="file-upload" className="upload-label">
+						<label
+							htmlFor="file-upload"
+							className="flex-1 min-w-64 max-md:min-w-full bg-purple-500/10 border-2 border-dashed border-purple-500/20 text-[#a0a0b0] px-8 py-4 rounded-xl cursor-pointer font-medium text-center flex items-center justify-center gap-2 transition-all duration-300 hover:border-purple-500/60 hover:text-purple-400 hover:bg-purple-500/15 hover:-translate-y-0.5"
+						>
 							{uploadedImage ? (
 								<>
 									<CloudCheck />
@@ -107,11 +120,20 @@ export function CodeGenerator() {
 								</>
 							)}
 						</label>
+
 						{uploadedImage && (
-							<button className="generate-btn" onClick={handleGenerate} disabled={isGenerating}>
+							<button
+								className="flex items-center gap-2 px-10 py-4 rounded-xl text-base font-semibold text-white cursor-pointer transition-all duration-300 shadow-[0_8px_24px_rgba(168,85,247,0.3)] whitespace-nowrap disabled:opacity-70 disabled:cursor-not-allowed enabled:hover:-translate-y-0.5 enabled:hover:shadow-[0_12px_32px_rgba(168,85,247,0.4)]"
+								style={{
+									background: "linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)",
+									border: "none",
+								}}
+								onClick={handleGenerate}
+								disabled={isGenerating}
+							>
 								{isGenerating ? (
 									<>
-										<span className="spinner"></span>
+										<span className="spinner" />
 										<span>Generating...</span>
 									</>
 								) : (
@@ -124,23 +146,30 @@ export function CodeGenerator() {
 						)}
 					</div>
 
+					{/* Tech Selection */}
 					<TechSelection selectedTech={selectedTech} onTechChange={setSelectedTech} />
 
+					{/* Preview + Code panels */}
 					{(uploadedImage || generatedCode) && (
-						<div className="main-content">
-							<div className="content-grid">
-								<div className="preview-section">
-									<div className="section-header">
-										<div className="section-title">
+						<div className="px-5 py-10 flex-1 w-full">
+							<div className="max-w-5xl mx-auto grid grid-cols-2 gap-6 max-md:grid-cols-1">
+								{/* Preview panel */}
+								<div className="flex flex-col">
+									<div className="flex justify-between items-center mb-4">
+										<div className="text-base font-semibold text-white flex items-center gap-2">
 											<Image />
 											Preview
 										</div>
 									</div>
-									<div className="preview-container">
+									<div className="bg-[rgba(20,20,40,0.8)] border border-purple-500/20 rounded-2xl p-5 h-112.5 max-md:min-h-75 flex items-center justify-center overflow-hidden backdrop-blur-sm transition-all duration-300 hover:border-purple-500/40 hover:shadow-[0_8px_32px_rgba(168,85,247,0.15)]">
 										{uploadedImage ? (
-											<img src={uploadedImage} alt="Uploaded design" className="preview-image" />
+											<img
+												src={uploadedImage}
+												alt="Uploaded design"
+												className="max-w-full max-h-full rounded-xl object-contain shadow-[0_4px_24px_rgba(0,0,0,0.3)]"
+											/>
 										) : (
-											<div className="preview-placeholder">
+											<div className="text-[#a0a0b0] text-center flex flex-col items-center gap-4">
 												<Image />
 												<p>Your design preview will appear here</p>
 											</div>
@@ -148,26 +177,31 @@ export function CodeGenerator() {
 									</div>
 								</div>
 
-								<div className="code-section">
-									<div className="section-header">
-										<div className="section-title">
+								{/* Code panel */}
+								<div className="flex flex-col">
+									<div className="flex justify-between items-center mb-4">
+										<div className="text-base font-semibold text-white flex items-center gap-2">
 											<CodeXml />
 											Generated Code
 										</div>
 										{generatedCode && (
-											<button ref={copyRef} className="copy-btn-small" onClick={handleCopy}>
-												<Copy />
+											<button
+												ref={copyRef}
+												className="bg-purple-500/10 text-purple-400 border border-purple-500/20 px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer flex items-center gap-1.5 transition-all duration-300 hover:bg-purple-500/20 hover:border-purple-500/50 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(168,85,247,0.2)] active:translate-y-0"
+												onClick={handleCopy}
+											>
+												<Copy size={14} />
 												Copy
 											</button>
 										)}
 									</div>
-									<div className="code-container">
+									<div className="code-scrollbar bg-[rgba(20,20,40,0.8)] border border-purple-500/20 rounded-2xl p-5 h-112.5 max-md:min-h-75 overflow-auto backdrop-blur-sm transition-all duration-300 hover:border-purple-500/40 hover:shadow-[0_8px_32px_rgba(168,85,247,0.15)]">
 										{generatedCode ? (
-											<pre className="code-output">
+											<pre className="text-green-400 font-mono text-[0.9rem] leading-relaxed m-0 whitespace-pre-wrap wrap-break-word">
 												<code>{generatedCode}</code>
 											</pre>
 										) : (
-											<div className="code-placeholder">
+											<div className="text-[#a0a0b0] text-center flex flex-col items-center justify-center gap-4 h-full">
 												<CodeXml />
 												<p>Your generated code will appear here</p>
 											</div>
@@ -178,14 +212,20 @@ export function CodeGenerator() {
 						</div>
 					)}
 
-					<div className="trusted-section">
-						<p className="trusted-text">Trusted by developers at</p>
-						<div className="brand-logos">
-							<span className="brand">Google</span>
-							<span className="brand">Meta</span>
-							<span className="brand">Amazon</span>
-							<span className="brand">Microsoft</span>
-							<span className="brand">Apple</span>
+					{/* Trusted section */}
+					<div className="mt-16">
+						<p className="text-[#a0a0b0] text-xs mb-5 uppercase tracking-widest">
+							Trusted by developers at
+						</p>
+						<div className="flex flex-wrap justify-center gap-8 opacity-60 max-md:gap-4">
+							{["Google", "Meta", "Amazon", "Microsoft", "Apple"].map((brand) => (
+								<span
+									key={brand}
+									className="text-[#a0a0b0] text-[0.95rem] font-medium tracking-wide transition-all duration-300 hover:text-purple-400 hover:-translate-y-0.5"
+								>
+									{brand}
+								</span>
+							))}
 						</div>
 					</div>
 				</div>
