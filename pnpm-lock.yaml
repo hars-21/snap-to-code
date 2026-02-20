@@ -63,6 +63,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.18
         version: 4.1.18(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0))
+      lucide-react:
+        specifier: ^0.563.0
+        version: 0.563.0(react@19.2.0)
       react:
         specifier: ^19.2.0
         version: 19.2.0
