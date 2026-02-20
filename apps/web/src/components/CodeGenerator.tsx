@@ -8,7 +8,7 @@ export function CodeGenerator() {
 	const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 	const [generatedCode, setGeneratedCode] = useState<string | null>(null);
 	const [isGenerating, setIsGenerating] = useState(false);
-	const [selectedTech, setSelectedTech] = useState("react");
+	const [selectedTech, setSelectedTech] = useState("react-tailwind");
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const copyRef = useRef<HTMLButtonElement>(null);
@@ -38,7 +38,7 @@ export function CodeGenerator() {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				base64Buffer: uploadedImage,
-				language: `${techLabel} + Tailwind CSS`,
+				language: techLabel,
 			}),
 		});
 
@@ -76,7 +76,7 @@ export function CodeGenerator() {
 						"radial-gradient(circle at 50% 50%, rgba(168,85,247,0.15) 0%, transparent 60%)",
 				}}
 			>
-				<div className="max-w-3xl text-center flex flex-col items-center">
+				<div className="w-full max-w-6xl text-center flex flex-col items-center">
 					{/* Badge */}
 					<div className="inline-flex items-center gap-2 px-5 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full text-sm text-[#a0a0b0] mb-8">
 						<span className="badge-dot" />
